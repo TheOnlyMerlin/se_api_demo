@@ -46,10 +46,61 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 |
 */
 
-App::error(function(Exception $exception, $code)
-{
+App::error(function(Exception $exception, $code) {
+
 	Log::error($exception);
+
+	// Handle all API errors as an API call.
+	if (Request::is('api/*')) {
+
+	// Handle API errors
+	$message = $exception->getMessage();
+
+	// Handle special cases from Guzzle
+		// if possible forward Guzzle's HTTP codes over to the API user
+	if ($exception instanceof GuzzleHttp\Exception\RequestException) {
+		
+		// Error is a networking error
+		if ($exception instanceof GuzzleHttp\Exception\ClientException) {
+			$code = $exception->getResponse()->getStatusCode();
+		} else {
+			$code = 500;
+		}
+
+		// Return the JSON api response
+		return Response::json([
+                    'code'      =>  $code,
+                    'message'   =>  $exception->getMessage()
+                ], $code); 
+	}
+
+
+	// switch statements provided in case you need to add
+    // additional logic for specific error code.
+    switch ($code) {
+        case 401:
+            return Response::json([
+                    'code'      =>  401,
+                    'message'   =>  $message
+                ], 401);
+        case 404:
+            $message            = (!$message ? $message = 'the requested resource was not found' : $message);
+            return Response::json([
+                    'code'      =>  404,
+                    'message'   =>  $message
+                ], 404);        
+    }
+
+    // Fallback code for handling items not otherwise covered by the switch
+    return Response::json([
+    		'code' => $code,
+    		'message' => $message
+    	], $code);
+	}
+
 });
+
+
 
 /*
 |--------------------------------------------------------------------------
