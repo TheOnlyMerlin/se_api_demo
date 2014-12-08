@@ -21,7 +21,7 @@
 
 <h3>Users</h3>
 <p><a href="http://apidemo.dev/api/v0.1/se/user/merlin">http://apidemo.dev/api/v0.1/se/user/merlin</a></p>
-<p><a href="http://apidemo.dev/api/v0.1/se/user/theonlymerlin">http://apidemo.dev/api/v0.1/se/user/merlin</a></p>
+<p><a href="http://apidemo.dev/api/v0.1/se/user/theonlymerlin">http://apidemo.dev/api/v0.1/se/user/theonlymerlin</a></p>
 <p><a href="http://apidemo.dev/api/v0.1/se/user/theonlymerlinsdfds">http://apidemo.dev/api/v0.1/se/user/theonlymerlinsdfds</a></p>
 
 <h2>Technologies Used</h2>
@@ -31,6 +31,13 @@
 	<li><em>Composer</em> - To handle dependencies / autoload / required by laravel</li>
 	<li><em>Guzzle</em> - To handle the API calls</li>
 	<li><em>Git</em> - Version Control</li>
+</ul>
+
+<h2>Other Notes</h2>
+<ul>
+	<li>User names are not necessarily exclusive in StackExchange, so I implemented a method to try and find all possible users, and get questions and answers based on that.</li>
+	<li>If you know the user ID, you can enter that and get their questions/answers unambiguously.</li>
+	<li>All errors in the "/api/*" urls will be handled in an API-friendly format.</li>
 </ul>
 
 </body></html>
